@@ -1,0 +1,13 @@
+{
+  "name": "Pune Flood Predictor",
+  "version": "1.0.0",
+  "description": "Basic linear regression model for flood prediction",
+  "accuracy": "R² = 0.9928",
+  "usage": "predictor.predict(avgRainfall)",
+  "savedAt": "2025-09-05T11:24:57.427Z",
+  "files": [
+    "model.json",
+    "training_data.json",
+    "metadata.json"
+  ]
+}
