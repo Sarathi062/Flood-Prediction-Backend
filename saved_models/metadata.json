@@ -1,6 +1,6 @@
 {
   "modelType": "SimpleLinearRegression",
-  "trainedAt": "2025-09-05T11:24:57.421Z",
+  "trainedAt": "2025-10-05T05:55:22.079Z",
   "version": "1.0.0",
   "samples": 10,
   "slope": 1.2752449133383572,

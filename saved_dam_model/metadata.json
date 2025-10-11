@@ -1,0 +1,26 @@
+{
+  "type": "DamReleaseLSTM",
+  "version": "3.0.1",
+  "trainedAt": "2025-10-11T05:02:19.038Z",
+  "sequenceLength": 24,
+  "features": [
+    "rainfall_1h",
+    "rainfall_6h",
+    "rainfall_24h",
+    "temperature_celsius",
+    "humidity",
+    "pressure",
+    "wind_speed",
+    "current_water_level_percent",
+    "hour_of_day",
+    "is_monsoon_season",
+    "wind_deg",
+    "wind_gust",
+    "clouds",
+    "visibility",
+    "dew_point",
+    "uvi"
+  ],
+  "samples": 192,
+  "finalLoss": 0.0005137757398188114
+}
