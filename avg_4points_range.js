@@ -1,14 +1,14 @@
+require("dotenv").config();
 const fetch = require("node-fetch");
 const XLSX = require("xlsx");
-
 // --- Configuration ---
-const API_KEY = "a09e97cd1b12f89bcb8fad12d0a16cd3";
+const API_KEY = process.env.OPENWEATHER_API_KEY || "";
 
 const locations = [
   { name: "Khadakwasla", lat: 18.430257, lon: 73.760422 },
   { name: "Varasgaon", lat: 18.391968, lon: 73.588515 },
   { name: "Panset", lat: 18.354437, lon: 73.572372 },
-  { name: "Temghar", lat: 18.452709, lon: 18.452709 }
+  { name: "Temghar", lat: 18.452709, lon: 18.452709 },
 ];
 
 // --- Utilities ---
@@ -128,7 +128,7 @@ function averageHourlyDataAcrossLocations(allLocationData) {
     "temperature_celsius",
     "humidity",
     "pressure",
-    "wind_deg", 
+    "wind_deg",
     "wind_gust",
     "wind_speed",
     "clouds",
@@ -214,7 +214,7 @@ function aggregateToDaily(hourlyData) {
     "temperature_celsius",
     "humidity",
     "pressure",
-    "wind_deg", 
+    "wind_deg",
     "wind_gust",
     "wind_speed",
     "clouds",
@@ -286,8 +286,8 @@ async function main() {
   );
 
   // Define date range
-  const startDate = new Date("2025-06-23T00:00:00+05:30");
-  const endDate = new Date("2025-06-25T23:00:00+05:30");
+  const startDate = new Date("2025-10-15T00:00:00+05:30");
+  const endDate = new Date("2025-10-16T23:00:00+05:30");
 
   console.log(
     `📅 Date range: ${startDate.toDateString()} to ${endDate.toDateString()}`

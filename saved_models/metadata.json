@@ -1,9 +1,0 @@
-{
-  "modelType": "SimpleLinearRegression",
-  "trainedAt": "2025-10-05T05:55:22.079Z",
-  "version": "1.0.0",
-  "samples": 10,
-  "slope": 1.2752449133383572,
-  "intercept": -3.834212509419743,
-  "r2": 0.9928268236686801
-}
