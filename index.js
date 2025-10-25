@@ -925,15 +925,77 @@ app.get("/api/predict-flood", async (req, res) => {
     // Example locations (you can extend this)
     const locations = [
       {
-        name: "Sinhagad Road Area",
-        lat: 18.45358740408368,
-        lng: 73.79506361806197,
+        name: "Sinhagad Road (near Ekta/Ektanagari)",
+        lat: 18.45719,
+        lng: 73.8194179,
+        waterLevel: 13.0,
+      },
+      { name: "Kasba Peth", lat: 18.5196, lng: 73.8553, waterLevel: 13.0 },
+      {
+        name: "Ektanagari (Ekta Nagar / Mutha riverbank)",
+        lat: 18.4615,
+        lng: 73.824,
         waterLevel: 13.0,
       },
       {
-        name: "Kasba Peth",
-        lat: 18.5196,
-        lng: 73.8553,
+        name: "Patil Estate (Shivaji Nagar area)",
+        lat: 18.531754,
+        lng: 73.854022,
+        waterLevel: 13.0,
+      },
+      {
+        name: "Bopodi (river/riverbank low-lying pockets)",
+        lat: 18.5693781,
+        lng: 73.8345794,
+        waterLevel: 13.0,
+      },
+      {
+        name: "Dattawadi / Parvati (low-lying riverside pockets)",
+        lat: 18.512,
+        lng: 73.858,
+        waterLevel: 13.0,
+      },
+      { name: "Katraj", lat: 18.456776, lng: 73.861019, waterLevel: 13.0 },
+      {
+        name: "Karvenagar / Karve Nagar (near river corridors)",
+        lat: 18.4899059,
+        lng: 73.8199014,
+        waterLevel: 13.0,
+      },
+      {
+        name: "Khadki / Khadaki (river/old cantonment low spots)",
+        lat: 18.569937,
+        lng: 73.850639,
+        waterLevel: 13.0,
+      },
+      {
+        name: "Dapodi (low-lying along Mula corridor)",
+        lat: 18.585367,
+        lng: 73.8299257,
+        waterLevel: 13.0,
+      },
+      {
+        name: "Baner (low pockets near river channels/seasonal streams)",
+        lat: 18.559658,
+        lng: 73.779938,
+        waterLevel: 13.0,
+      },
+      {
+        name: "Aundh (low pockets near Mula-Pavana tributaries)",
+        lat: 18.562622,
+        lng: 73.808723,
+        waterLevel: 13.0,
+      },
+      {
+        name: "Pulachi Wadi / Pulachiwadi (Sinhagad Rd riverside slum pockets)",
+        lat: 18.4625,
+        lng: 73.823,
+        waterLevel: 13.0,
+      },
+      {
+        name: "Narayan Peth / Deccan Gymkhana (riverside roads that get closed)",
+        lat: 18.519,
+        lng: 73.857,
         waterLevel: 13.0,
       },
     ];
