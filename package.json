@@ -19,6 +19,7 @@
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.22.0",
     "@tensorflow/tfjs-node-gpu": "^4.22.0",
+    "agenda": "^5.0.0",
     "axios": "^1.12.2",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
@@ -29,6 +30,7 @@
     "express": "^5.1.0",
     "mathjs": "^14.6.0",
     "ml-regression": "^6.3.0",
+    "mongoose": "^8.19.3",
     "multer": "^2.0.2",
     "node-fetch": "^2.7.0",
     "xlsx": "^0.18.5"
