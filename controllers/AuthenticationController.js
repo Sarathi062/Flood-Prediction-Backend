@@ -41,7 +41,7 @@ const googleCallback = async (req, res) => {
     });
 
     // Redirect user to frontend (e.g., dashboard)
-    return res.redirect("https://floodprediction.in/dashboard");
+    return res.redirect("https://www.floodprediction.in/dashboard");
   } catch (error) {
     console.log("Google Callback Error:", error);
     return res.status(500).json({ message: "Server error" });
