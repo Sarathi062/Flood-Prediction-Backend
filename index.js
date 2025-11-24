@@ -1,11 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-
+const cookieParser = require("cookie-parser");
 const PredictionRoutes = require("./routes/PredictionRoutes");
 const TrainingRoutes = require("./routes/TrainingRoutes");
+const AuthenticationRoutes = require("./routes/AuthenticationRoutes.js");
 const connectDB = require("./config/connectDB");
 const startAgenda = require("./agenda.js");
+const passport = require("./config/passport.js");
+
 // const FloodPredictor = require("./mlService");
 
 const DamReleaseLSTMPredictor = require("./DamReleaseLSTMPredictor");
@@ -15,9 +18,16 @@ const predictorDam = new DamReleaseLSTMPredictor();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL, // your frontend URL
+    credentials: true, // allow cookies
+  })
+);
+
 app.use(express.json());
+app.use(cookieParser());
+app.use(passport.initialize());
 
 // Initialize model loading on startup
 // async function initializeDamModel() {
@@ -31,6 +41,7 @@ app.use(express.json());
 
 app.use("/api", PredictionRoutes);
 app.use("/api/train", TrainingRoutes);
+app.use("/api/login", AuthenticationRoutes);
 
 connectDB().then(async () => {
   // Start server and initialize model

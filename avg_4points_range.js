@@ -286,8 +286,8 @@ async function main() {
   );
 
   // Define date range
-  const startDate = new Date("2025-10-15T00:00:00+05:30");
-  const endDate = new Date("2025-10-16T23:00:00+05:30");
+  const startDate = new Date("2023-10-15T00:00:00+05:30");
+  const endDate = new Date("2023-10-16T23:00:00+05:30");
 
   console.log(
     `📅 Date range: ${startDate.toDateString()} to ${endDate.toDateString()}`

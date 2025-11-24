@@ -2,7 +2,9 @@ const xlsx = require("xlsx");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const DamReleaseLSTMPredictor = require("../DamReleaseLSTMPredictor");
 
+const predictorDam = new DamReleaseLSTMPredictor();
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

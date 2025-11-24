@@ -29,7 +29,7 @@ async function startAgenda() {
   );
 
   // Manual kick for testing (remove in prod if you don’t want an immediate run)
-  //   await agenda.now("daily-db-update");
+    // await agenda.now("daily-db-update");
 
   return agenda;
 }
