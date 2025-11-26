@@ -36,12 +36,12 @@ const googleCallback = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true, // must be false on localhost
-      sameSite: "None", // important for localhost cross-port cookies
+      sameSite: "None", // important for localhost cross-port cookies lex
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     // Redirect user to frontend (e.g., dashboard)
-    return res.redirect("https://www.floodprediction.in/dashboard");
+    return res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
   } catch (error) {
     console.log("Google Callback Error:", error);
     return res.status(500).json({ message: "Server error" });

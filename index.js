@@ -21,6 +21,8 @@ const PORT = process.env.PORT || 3001;
 app.use(
   cors({
     origin: ["https://floodprediction.in", "https://www.floodprediction.in"], // your frontend URL
+
+    // origin: "http://localhost:3000",
     credentials: true, // allow cookies
   })
 );
@@ -49,6 +51,11 @@ connectDB().then(async () => {
   app.listen(PORT, async () => {
     console.log(`Backend running on http://localhost:${PORT}`);
     console.log(`Test: http://localhost:${PORT}/api/predict-flood'`);
+
+
+    console.log(process.env.callbackURL);
+    console.log(process.env.FRONTEND_URL);
+    console.log(process.env.JWT_SECRET);
 
     // Initialize model on startup
     // await initializeDamModel();

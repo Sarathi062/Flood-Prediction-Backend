@@ -6,8 +6,7 @@ passport.use(
     {
       clientID: process.env.G_CLIENT_ID,
       clientSecret: process.env.G_CLIENT_SECRET,
-      callbackURL:
-        "https://flood-prediction-backend-ycp3.onrender.com/api/login/auth/google/callback",
+      callbackURL: process.env.callbackURL,
     },
     (accessToken, refreshToken, profile, done) => {
       return done(null, profile);
