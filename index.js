@@ -52,11 +52,6 @@ connectDB().then(async () => {
     console.log(`Backend running on http://localhost:${PORT}`);
     console.log(`Test: http://localhost:${PORT}/api/predict-flood'`);
 
-
-    console.log(process.env.callbackURL);
-    console.log(process.env.FRONTEND_URL);
-    console.log(process.env.JWT_SECRET);
-
     // Initialize model on startup
     // await initializeDamModel();
   });
