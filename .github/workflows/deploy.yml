@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to Lightsail
         run: |
-          ssh -o StrictHostKeyChecking=no -6 -i lightsail_key.pem $LIGHTSAIL_USER@$LIGHTSAIL_HOST "
+          ssh -o StrictHostKeyChecking=no -i lightsail_key.pem $LIGHTSAIL_USER@$LIGHTSAIL_HOST "
             cd /home/ubuntu/Flood-Prediction-Backend &&
             git pull &&
             npm install &&
