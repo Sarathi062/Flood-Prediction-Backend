@@ -21,8 +21,6 @@ const PORT = process.env.PORT || 3001;
 app.use(
   cors({
     origin: ["https://floodprediction.in", "https://www.floodprediction.in"], // your frontend URL
-
-    // origin: "http://localhost:3000",
     credentials: true, // allow cookies
   })
 );
@@ -40,6 +38,9 @@ app.use(passport.initialize());
 //     console.log("⚠️ No saved dam model found. Please train the model first.");
 //   }
 // }
+app.get("/", (req, res) => {
+  res.send("Flood Prediction API is running 🚀");
+});
 
 app.use("/api", PredictionRoutes);
 app.use("/api/train", TrainingRoutes);
