@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const PredictionRoutes = require("./routes/PredictionRoutes");
 const TrainingRoutes = require("./routes/TrainingRoutes");
+const EvaluationRoutes = require("./routes/EvaluationRoutes");
 const AuthenticationRoutes = require("./routes/AuthenticationRoutes.js");
 const connectDB = require("./config/connectDB");
 const startAgenda = require("./agenda.js");
@@ -21,6 +22,7 @@ const PORT = process.env.PORT || 3001;
 app.use(
   cors({
     origin: ["https://floodprediction.in", "https://www.floodprediction.in"], // your frontend URL
+    // origin: "http://localhost:3000",
     credentials: true, // allow cookies
   })
 );
@@ -44,7 +46,8 @@ app.get("/", (req, res) => {
 
 app.use("/api", PredictionRoutes);
 app.use("/api/train", TrainingRoutes);
-app.use("/api/login", AuthenticationRoutes);
+app.use("/api/evaluation", EvaluationRoutes);
+app.use("/api/login", AuthenticationRoutes);  
 
 connectDB().then(async () => {
   // Start server and initialize model

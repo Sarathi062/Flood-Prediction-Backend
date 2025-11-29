@@ -3,6 +3,8 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const DamReleaseLSTMPredictor = require("../DamReleaseLSTMPredictor");
+const DamData = require("../models/DamData");
+const EvaluationSample = require("../models/EvaluationSample");
 
 const predictorDam = new DamReleaseLSTMPredictor();
 // Configure multer for file uploads
@@ -30,7 +32,6 @@ const upload = multer({
   },
 });
 // Helper function to convert Excel date to JavaScript Date
-
 
 function excelDateToJSDate(excelDate) {
   if (typeof excelDate === "number") {
@@ -227,85 +228,84 @@ const train = async () => {
   }
 };
 
-const trainFile = async() =>{
- try {
+const trainFile = async (req, res) => {
+  try {
     const filePath = "./dam_prediction_data_2025-10-10.xlsx";
-
-    if (!filePath) {
-      return res.status(400).json({
-        success: false,
-        message: "Please provide filePath in request body",
-      });
-    }
+    console.log("📄 Reading Excel:", filePath);
 
     if (!fs.existsSync(filePath)) {
       return res.status(400).json({
         success: false,
-        message: `File not found: ${filePath}`,
+        message: "Excel file not found",
       });
     }
 
-    console.log("Processing file:", filePath);
+    // 1. Parse Excel rows
+    const rows = parseExcelData(filePath);
 
-    // Parse Excel data
-    const trainingData = parseExcelData(filePath);
-
-    if (trainingData.length < 25) {
+    if (rows.length < 50) {
       return res.status(400).json({
         success: false,
-        message: `Insufficient data: Need at least 25 rows, got ${trainingData.length}`,
+        message: `Dataset too small. Need at least 50 rows, got ${rows.length}`,
       });
     }
 
-    // Sort data by timestamp
-    trainingData.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    // 2. Sort chronologically
+    rows.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    console.log(`📌 Total parsed rows: ${rows.length}`);
 
-    // Build rolling sequences
-    const SEQ_LEN = 24;
-    const trainingBatch = [];
+    // 3. Save ALL rows in DamData collection
+    await DamData.deleteMany({});
+    await DamData.insertMany(rows);
+    console.log("💾 All rows saved to DamData");
 
-    for (let i = SEQ_LEN; i < trainingData.length; i++) {
-      trainingBatch.push(trainingData.slice(i - SEQ_LEN, i));
-    }
+    // 4. 80-20 split
+    const total = rows.length;
+    const trainSize = Math.floor(total * 0.8);
 
-    console.log("Total training sequences:", trainingBatch.length);
+    const trainRows = rows.slice(0, trainSize);
+    const evalRows = rows.slice(trainSize); // 20% evaluation set
 
-    if (trainingBatch.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: `Need at least ${SEQ_LEN + 1} rows for sequence training`,
-      });
-    }
+    console.log(`📚 Train rows: ${trainRows.length}`);
+    console.log(`🧪 Eval rows: ${evalRows.length}`);
 
-    // Train the model
-    console.log("Starting model training...");
-    await predictorDam.trainModel(trainingBatch);
+    // 5. Save 20% evaluation rows in separate DB collection
+    await EvaluationSample.deleteMany({});
+    await EvaluationSample.insertMany(evalRows);
+    console.log("💾 Evaluation rows stored in EvaluationSample");
 
-    // Save the model
+    // 6. Train LSTM using 80% ONLY
+    console.log("🚀 Starting model training...");
+    await predictorDam.trainModel(trainRows);
+
+    // 7. Save model + scaler
     await predictorDam.saveModel();
+    console.log("💾 Model saved to saved_dam_model/");
 
-    res.json({
+    // 8. Return response
+    return res.json({
       success: true,
       message: "LSTM model trained successfully!",
-      dataInfo: {
-        totalRows: trainingData.length,
-        trainingSequences: trainingBatch.length,
-        sequenceLength: SEQ_LEN,
+      dataset: {
+        totalRows: total,
+        trainRows: trainRows.length,
+        evalRows: evalRows.length,
         dateRange: {
-          start: trainingData[0]?.timestamp,
-          end: trainingData[trainingData.length - 1]?.timestamp,
+          start: rows[0].timestamp,
+          end: rows[rows.length - 1].timestamp,
         },
       },
       modelInfo: predictorDam.getModelInfo(),
     });
-  } catch (error) {
-    console.error("Training error:", error);
-    res.status(500).json({
+  } catch (err) {
+    console.error("❌ Training Error:", err);
+
+    return res.status(500).json({
       success: false,
-      message: error.message || "Training failed",
+      message: err.message || "Training failed",
     });
   }
-}
+};
 module.exports = {
   train,
   trainFile,
