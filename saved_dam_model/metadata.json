@@ -1,7 +1,7 @@
 {
   "type": "DamReleaseLSTM",
   "version": "3.0.1",
-  "trainedAt": "2025-10-11T05:02:19.038Z",
+  "trainedAt": "2025-11-29T08:30:21.719Z",
   "sequenceLength": 24,
   "features": [
     "rainfall_1h",
@@ -21,6 +21,6 @@
     "dew_point",
     "uvi"
   ],
-  "samples": 192,
-  "finalLoss": 0.0005137757398188114
+  "samples": 168,
+  "finalLoss": 0.001035860856063664
 }

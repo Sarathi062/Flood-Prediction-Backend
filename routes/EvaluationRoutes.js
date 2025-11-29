@@ -1,8 +1,8 @@
 const express = require("express");
-const { testPredict } = require("../controllers/TestController");
+const { runEvaluation } = require("../controllers/EvaluationController");
 
 const router = express.Router();
 
-router.get("/test-predict", testPredict);
+router.get("/runEvaluation", runEvaluation);
 
 module.exports = router;
