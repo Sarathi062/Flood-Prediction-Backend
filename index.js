@@ -9,7 +9,7 @@ const AuthenticationRoutes = require("./routes/AuthenticationRoutes.js");
 const connectDB = require("./config/connectDB");
 const startAgenda = require("./agenda.js");
 const passport = require("./config/passport.js");
-
+const { verifyJWT } = require("./middleware/verifyJWT.js");
 // const FloodPredictor = require("./mlService");
 
 const DamReleaseLSTMPredictor = require("./DamReleaseLSTMPredictor");
@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 3001;
 app.use(
   cors({
     origin: ["https://floodprediction.in", "https://www.floodprediction.in"], // your frontend URL
-    // origin: "http://localhost:3000",
+    //origin: "http://localhost:3000",
     credentials: true, // allow cookies
   })
 );
@@ -43,11 +43,11 @@ app.use(passport.initialize());
 app.get("/", (req, res) => {
   res.send("Flood Prediction API is running 🚀");
 });
+app.use("/api/login", AuthenticationRoutes);
 
-app.use("/api", PredictionRoutes);
-app.use("/api/train", TrainingRoutes);
-app.use("/api/evaluation", EvaluationRoutes);
-app.use("/api/login", AuthenticationRoutes);  
+app.use("/api", verifyJWT, PredictionRoutes);
+app.use("/api/train", verifyJWT, TrainingRoutes);
+app.use("/api/evaluation", verifyJWT, EvaluationRoutes);
 
 connectDB().then(async () => {
   // Start server and initialize model
