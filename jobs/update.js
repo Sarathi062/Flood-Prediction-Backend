@@ -8,15 +8,19 @@ const predictorDam = new DamReleaseLSTMPredictor();
 
 const floodPredict = async (req, res) => {
   try {
-    // Example locations (you can extend this)
     const locations = [
       {
         name: "Sinhagad Road (near Ekta/Ektanagari)",
-        lat: 18.45719,
-        lng: 73.8194179,
+        lat: 18.4662501,
+        lng: 73.8172121,
         waterLevel: 13.0,
       },
-      { name: "Kasba Peth", lat: 18.5196, lng: 73.8553, waterLevel: 13.0 },
+      {
+        name: "Kasba Peth",
+        lat: 18.5196,
+        lng: 73.8553,
+        waterLevel: 13.0,
+      },
       {
         name: "Ektanagari (Ekta Nagar / Mutha riverbank)",
         lat: 18.4615,
@@ -31,8 +35,8 @@ const floodPredict = async (req, res) => {
       },
       {
         name: "Bopodi (river/riverbank low-lying pockets)",
-        lat: 18.5693781,
-        lng: 73.8345794,
+        lat: 18.566791,
+        lng: 73.834555,
         waterLevel: 13.0,
       },
       {
@@ -41,7 +45,12 @@ const floodPredict = async (req, res) => {
         lng: 73.858,
         waterLevel: 13.0,
       },
-      { name: "Katraj", lat: 18.456776, lng: 73.861019, waterLevel: 13.0 },
+      {
+        name: "Katraj",
+        lat: 18.4536792,
+        lng: 73.8563196,
+        waterLevel: 13.0,
+      },
       {
         name: "Karvenagar / Karve Nagar (near river corridors)",
         lat: 18.4899059,
@@ -166,13 +175,11 @@ const floodPredict = async (req, res) => {
       timestamp: new Date().toISOString(),
       status: "success",
     };
-    
 
     await FloodResult.create(responseData);
 
     // --- 4️⃣ Return combined flood prediction result ---
     // res.json(responseData);
-    
   } catch (error) {
     console.error("Flood prediction error:", error);
     res.status(500).json({
@@ -182,6 +189,5 @@ const floodPredict = async (req, res) => {
     });
   }
 };
-
 
 module.exports = floodPredict;
