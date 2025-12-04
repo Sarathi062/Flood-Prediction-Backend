@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const PredictionRoutes = require("./routes/PredictionRoutes");
 const TrainingRoutes = require("./routes/TrainingRoutes");
 const EvaluationRoutes = require("./routes/EvaluationRoutes");
+const UserRoutes = require("./routes/UserRoutes");
 const AuthenticationRoutes = require("./routes/AuthenticationRoutes.js");
 const connectDB = require("./config/connectDB");
 const startAgenda = require("./agenda.js");
@@ -46,6 +47,7 @@ app.get("/", (req, res) => {
 app.use("/api/login", AuthenticationRoutes);
 
 app.use("/api", verifyJWT, PredictionRoutes);
+app.use("/api/user", verifyJWT, UserRoutes);
 app.use("/api/train", verifyJWT, TrainingRoutes);
 app.use("/api/evaluation", verifyJWT, EvaluationRoutes);
 
