@@ -30,13 +30,7 @@ const userSchema = new mongoose.Schema(
     /* 🔔 In-App Notifications */
     notifications: {
       type: [notificationSchema],
-      default: () => [
-        {
-          id: "complete-alert-profile",
-          title: "Complete Alert Profile",
-          message: "Add your phone number to get flood alerts.",
-        },
-      ],
+      default: () => [],
     },
 
     /* 📱 User alert preferences */

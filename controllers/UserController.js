@@ -18,14 +18,7 @@ exports.markNotificationsSeen = async (req, res) => {
 
     // 2️⃣ If notifications do NOT exist, create default one
     if (!user.notifications || user.notifications.length === 0) {
-      user.notifications = [
-        {
-          id: "complete-alert-profile",
-          title: "Complete Alert Profile",
-          message: "Add your phone number to get flood alerts.",
-          seen: false,
-        },
-      ];
+      user.notifications = [];
     }
 
     // 3️⃣ Mark all notifications as seen
