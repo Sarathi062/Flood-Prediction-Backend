@@ -1,32 +1,40 @@
 const mailer = require("../utils/mailer");
 
 /**
- * Sends notification email silently (no throw).
- * Used for region subscription or alert-profile updates.
- */ const formatRegions = (regions) =>
+ * Capitalize each region name
+ */
+const formatRegions = (regions = []) =>
   regions.map((r) => r.charAt(0).toUpperCase() + r.slice(1)).join(", ");
 
+/**
+ * Sends notification email silently (no throw).
+ */
 const sendMailSilently = async ({ email, type, phone, regions = [] }) => {
   const isAlertProfile = type === "alert-profile";
 
-  // Generate Subject
+  // Subject
   const subject = isAlertProfile
     ? "🔔 Your Alert Profile Has Been Updated"
     : "🌍 Your Region Subscription Has Been Updated";
 
-  // Generate Plain Text Body
+  // Plain text body (FIXED: now shows formatted regions)
   const textBody = isAlertProfile
-    ? `Your alert profile has been successfully updated.\nPhone: ${phone}\nRegions: ${regions.join(
-        ", "
-      )}`
-    : `You have subscribed to the following regions:\n${regions.join(", ")}`;
+    ? `Your alert profile has been successfully updated.
+Phone: ${phone}
+Regions: ${formatRegions(regions)}`
+    : `You have subscribed to the following regions:
+${formatRegions(regions)}`;
 
-  // Generate HTML Body
+  // HTML Body
   const htmlBody = `
     <div style="font-family: Arial; line-height: 1.6; color: #333;">
-      <h2 style="color:#4a90e2;">${
-        isAlertProfile ? "Alert Profile Updated" : "Region Subscription Updated"
-      }</h2>
+      <h2 style="color:#4a90e2;">
+        ${
+          isAlertProfile
+            ? "Alert Profile Updated"
+            : "Region Subscription Updated"
+        }
+      </h2>
 
       ${
         isAlertProfile
@@ -34,7 +42,6 @@ const sendMailSilently = async ({ email, type, phone, regions = [] }) => {
         <p>Your alert profile has been updated with the following details:</p>
         <ul>
           <li><strong>Phone:</strong> ${phone}</li>
-          <li><strong>Regions:</strong> ${formatRegions(regions)}</li>
         </ul>
       `
           : `
@@ -56,12 +63,6 @@ const sendMailSilently = async ({ email, type, phone, regions = [] }) => {
       subject,
       text: textBody,
       html: htmlBody,
-    });
-
-    console.log("📨 [MAIL-SUCCESS]", {
-      to: email,
-      type,
-      timestamp: new Date().toISOString(),
     });
   } catch (err) {
     console.error("❌ [MAIL-ERROR]: Failed to send email", {
