@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User"); // your MongoDB user model
+const Admin = require("../models/Admin"); // your MongoDB user model
+const bcrypt = require("bcryptjs");
 
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
@@ -76,8 +78,54 @@ const logout = async (req, res) => {
   }
 };
 
+const getAdminProfile = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const admin = await Admin.findOne({ email });
+    if (!admin) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const token = generateToken(admin._id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    return res.status(200).json({
+      message: "Admin login successful",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getAdminProfileview = async (req, res) => {
+  try {
+    const admin = await Admin.findById(req.user.id).select("-password -__v");
+    // console.log(req.user.id);
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    return res.status(200).json({
+      admin,
+    });
+  } catch (error) {
+    console.log("Admin Profile Error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 module.exports = {
   googleCallback,
   getUserProfile,
   logout,
+  getAdminProfileview,
+  getAdminProfile,
 };

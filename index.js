@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3001;
 app.use(
   cors({
     origin: ["https://floodprediction.in", "https://www.floodprediction.in"], // your frontend URL
-    //origin: "http://localhost:3000",
+    // origin: "http://localhost:3000",
     credentials: true, // allow cookies
   })
 );

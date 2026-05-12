@@ -1,5 +1,68 @@
 const User = require("../models/User");
 const sendMailSilently = require("../helper/sendMailSilently");
+
+/* ============================================================
+   4️⃣ SEND REGION ALERT MAIL
+============================================================ */
+
+exports.sendRegionAlertMail = async (req, res) => {
+  try {
+    const { region, subject, message, level } = req.body;
+    if (!region || !message) {
+      return res.status(400).json({
+        success: false,
+        message: "Region and message are required",
+      });
+    }
+
+    const users = await User.find({
+      "subscribedRegions.0.0": region.toLowerCase(),
+    });
+
+    if (!users.length) {
+      return res.json({
+        success: true,
+        message: "No users subscribed to this region",
+      });
+    }
+
+    // Send mail to all subscribed users
+    for (const user of users) {
+      sendMailSilently({
+        email: user.email,
+        type: "region-alert",
+        region,
+        subject,
+        message,
+        level,
+      });
+
+      // Optional: push notification into DB
+      user.notifications.push({
+        title: `Flood Alert - ${region}`,
+        message,
+        level,
+        seen: false,
+        createdAt: new Date(),
+      });
+
+      await user.save();
+    }
+
+    res.json({
+      success: true,
+      message: `Alert sent to ${users.length} subscribed users`,
+    });
+  } catch (error) {
+    console.error("Send region alert error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 /* ============================================================
    1️⃣ MARK ALL NOTIFICATIONS AS SEEN
 ============================================================ */
@@ -64,7 +127,7 @@ exports.updateAlertProfile = async (req, res) => {
       {
         new: true,
         arrayFilters: [{ "n.id": "complete-alert-profile" }],
-      }
+      },
     );
     sendMailSilently({
       email: user.email,

@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 /* 🔔 Notification Schema (with timestamps) */
 const notificationSchema = new mongoose.Schema(
   {
-    id: { type: String, required: true }, // unique notification key
+    id: { type: String }, // unique notification key
     title: String,
     message: String,
     seen: { type: Boolean, default: false },
   },
-  { timestamps: true } // <-- IMPORTANT: adds createdAt & updatedAt
+  { timestamps: true }, // <-- IMPORTANT: adds createdAt & updatedAt
 );
 
 /* 📱 Alert Profile Schema */
@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("User", userSchema);
