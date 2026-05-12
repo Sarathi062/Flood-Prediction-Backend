@@ -5,9 +5,13 @@ const {
   googleCallback,
   getUserProfile,
   logout,
+  getAdminProfile,
+  getAdminProfileview
 } = require("../controllers/AuthenticationController");
 
 const router = express.Router();
+
+router.post("/admin",getAdminProfile);
 
 router.get(
   "/me",
@@ -15,15 +19,25 @@ router.get(
     next();
   },
   verifyJWT,
-  getUserProfile
+  getUserProfile,
 );
+
+router.get(
+  "/admin",
+  (req, res, next) => {
+    next();
+  },
+  verifyJWT,
+  getAdminProfileview,
+);
+
 
 router.get(
   "/auth/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
     session: false,
-  })
+  }),
 );
 
 router.get(
@@ -32,7 +46,7 @@ router.get(
     failureRedirect: "/login",
     session: false,
   }),
-  googleCallback
+  googleCallback,
 );
 
 // Protected route example
